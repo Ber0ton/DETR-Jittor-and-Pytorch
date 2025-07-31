@@ -122,7 +122,7 @@ unzip annotations_trainval2017.zip
 
 **数据集获取**：
 
-- 百度网盘：https://pan.baidu.com/s/1TeHnVfY88K5BGvCQ33lGgw（提取码：m74q）
+- 百度网盘：https://pan.baidu.com/s/1TeHnVfY88K5BGvCQ33lGgw （提取码：m74q）
 - 包含已处理好的 COCO 格式标注文件
 
 ## 🚀 训练脚本
@@ -227,13 +227,13 @@ python main.py \
 
 下图展示了 Jittor 和 PyTorch 两个框架在训练过程中的损失变化对比。可以看到两个框架的损失收敛趋势基本一致：
 
-![Training Loss Comparison](https://claude6.claudechat.pro/chat/pics-and-logs/training_loss_comparison.png)
+![Training Loss Comparison](./pics-and-logs/training_loss_comparison.png)
 
 #### AP 性能曲线对比
 
 下图展示了两个框架在验证集上的 AP 性能变化。由于数据集规模较小，性能指标仅供框架对齐验证参考：
 
-![Performance Comparison](https://claude6.claudechat.pro/chat/pics-and-logs/performance_comparison.png)
+![Performance Comparison](./pics-and-logs/performance_comparison.png)
 
 ### 📄 训练日志
 
