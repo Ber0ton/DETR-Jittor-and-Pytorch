@@ -146,22 +146,22 @@ python main.py \
 | `--clip_max_norm` | 0.1    | float | 梯度裁剪阈值   |
 
 ### 损失曲线
-![pic_loss](./pics-and-logs/picloss.png)
+![pic_loss](./pics-and-logs/training_loss_comparison.png)
 
 ### AP性能曲线
 
-![pic_ap](./pics-and-logs/training_loss_comparison.png)
+![pic_ap](./pics-and-logs/performance_comparison.png)
 
 
 ### 训练过程日志示例
 
 **Pytorch**
 
-见'pics-and-logs/log_torch'
+见'pics-and-logs/log_torch.txt'
 
 **Jittor**
 
-见'pics-and-logs/log_torch'
+见'pics-and-logs/log_torch.txt'
 
 
 ## 性能对比
