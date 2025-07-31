@@ -1,8 +1,8 @@
 # DETR - Jittor Implementation
 
-[中文版本](./README_CN.md) | English
+[简体中文](./README_CN.md) | English
 
-## Project Overview
+## 📋 Project Overview
 
 [![Jittor](https://img.shields.io/badge/Jittor-v1.3.8.5+-green.svg?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMiA3VjE3TDEyIDIyTDIyIDE3VjdMMTIgMloiIGZpbGw9IiM0Q0FGNTAiLz4KPC9zdmc+)](https://github.com/Jittor/jittor) [![PyTorch](https://img.shields.io/badge/PyTorch-v2.4.1-orange.svg?style=for-the-badge&logo=pytorch)](https://pytorch.org/)
 
@@ -14,24 +14,28 @@ This project is a **Jittor** framework implementation of **DETR (Detection Trans
 
 - While Transformer's global modeling capability effectively reduces detection box redundancy, its high computational complexity also leads to longer convergence times. Nevertheless, this project provides a complete DETR model implementation using the Jittor framework based on the official PyTorch version, with detailed training logs and performance comparison data, along with complete training and testing scripts and configuration instructions.
 
-## Environment Setup
+## 🛠️ Environment Setup
 
-### System Requirements
+### 📦 System Requirements
 
 - Python >= 3.7
 - Jittor >= 1.3.8.5
 - CUDA >= 12.1
 
-### Installation Steps
+### 📥 Installation Steps
 
-#### Clone Repository
+#### 🔧 Clone Repository
+
+The following command will clone the entire project repository to your local machine:
 
 ```bash
 git clone https://github.com/Ber0ton/DETR-Jittor-and-Pytorch.git
 cd DETR-Jittor-and-Pytorch
 ```
 
-#### Jittor Environment Setup
+#### 🚀 Jittor Environment Setup
+
+These steps will help you configure a complete Jittor runtime environment, including creating a virtual environment, installing dependencies, and verifying the installation:
 
 ```bash
 # 1. Create Jittor virtual environment
@@ -55,7 +59,9 @@ cd DETR-Jittor
 pip install -r requirements.txt
 ```
 
-#### PyTorch Environment Setup (for comparison experiments)
+#### 🔥 PyTorch Environment Setup (for comparison experiments)
+
+To perform framework performance comparisons, you'll also need to configure a PyTorch environment:
 
 ```bash
 # 1. Create PyTorch virtual environment
@@ -70,9 +76,9 @@ cd DETR-Pytorch
 pip install -r requirements.txt
 ```
 
-## Data Preparation
+## 📊 Data Preparation
 
-### COCO Dataset Structure
+### 📁 COCO Dataset Structure
 
 Please prepare your dataset according to the following directory structure. Annotations must follow COCO format standards:
 
@@ -85,9 +91,11 @@ path/to/coco/
 └── val2017/          # Validation images
 ```
 
-### Dataset Download
+### 💾 Dataset Download
 
-#### Official Complete COCO Dataset
+#### 🌐 Official Complete COCO Dataset
+
+If you need to use the complete COCO dataset for training, you can use the following script to download:
 
 ```bash
 # Download COCO 2017 dataset (optional)
@@ -105,7 +113,7 @@ wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip
 unzip annotations_trainval2017.zip
 ```
 
-#### Custom Dataset
+#### 📦 Custom Dataset
 
 Considering computational resource limitations and experimental efficiency, this project uses a streamlined COCO dataset for validation experiments:
 
@@ -116,12 +124,14 @@ Considering computational resource limitations and experimental efficiency, this
 
 **Dataset Access**:
 
-- Baidu Netdisk: https://pan.baidu.com/s/1TeHnVfY88K5BGvCQ33lGgw (Password: m74q)
+- Baidu Netdisk: https://pan.baidu.com/s/1TeHnVfY88K5BGvCQ33lGgw  (Password: m74q)
 - Contains pre-processed COCO format annotation files
 
-## Training Scripts
+## 🚀 Training Scripts
 
-### Jittor Training
+### 🟢 Jittor Training
+
+The following command starts DETR model training under the Jittor framework. Note: adjust the batch_size parameter according to your GPU memory:
 
 ```bash
 python main.py \
@@ -134,7 +144,9 @@ python main.py \
     --lr_drop 200
 ```
 
-### PyTorch Training (for comparison)
+### 🟠 PyTorch Training (for comparison)
+
+Train with the same hyperparameters under the PyTorch framework for performance comparison:
 
 ```bash
 python main.py \
@@ -147,9 +159,11 @@ python main.py \
     --lr_drop 200
 ```
 
-## Testing Scripts
+## 🧪 Testing Scripts
 
-### Jittor Evaluation
+### 🟢 Jittor Evaluation
+
+Load the trained Jittor model for performance evaluation:
 
 ```bash
 python main.py \
@@ -160,7 +174,9 @@ python main.py \
     --coco_path /path/to/coco
 ```
 
-### PyTorch Evaluation
+### 🟠 PyTorch Evaluation
+
+Load the trained PyTorch model for performance evaluation:
 
 ```bash
 python main.py \
@@ -171,7 +187,7 @@ python main.py \
     --coco_path /path/to/coco
 ```
 
-## Experimental Notes and Model Weights
+## 📝 Experimental Notes and Model Weights
 
 Due to DETR model's high computational complexity and experimental resource limitations (single GPU training, small batch size, limited training epochs), current AP performance metrics have not yet reached the levels reported in the paper and should not be used as a performance benchmark. However, to verify the correct alignment between Jittor implementation and PyTorch version, corresponding model weight files are provided at https://pan.baidu.com/s/1bPnYl0jqxvm3Y5oK_VUjow?pwd=qbdf (Password: qbdf) for:
 
@@ -179,9 +195,9 @@ Due to DETR model's high computational complexity and experimental resource limi
 - Checking numerical computation alignment
 - Serving as initialization weights for subsequent complete training
 
-## Training Configuration and Logs
+## ⚙️ Training Configuration and Logs
 
-### Main Training Parameters
+### 🔧 Main Training Parameters
 
 Only optimizer hyperparameters are shown here. For complete parameter configuration, see `main.py`.
 
@@ -207,33 +223,37 @@ Only optimizer hyperparameters are shown here. For complete parameter configurat
 | `--epochs`        | 31      | int   | Training epochs          |
 | `--clip_max_norm` | 0.1     | float | Gradient clipping threshold |
 
-### Training Curves
+### 📈 Training Curves
 
 #### Loss Curve Comparison
+
+The figure below shows the loss change comparison between Jittor and PyTorch frameworks during training. You can see that the loss convergence trends of both frameworks are basically consistent:
 
 ![Training Loss Comparison](./pics-and-logs/training_loss_comparison.png)
 
 #### AP Performance Curve Comparison
 
+The figure below shows the AP performance changes on the validation set for both frameworks. Due to the small dataset scale, performance metrics are only for framework alignment verification:
+
 ![Performance Comparison](./pics-and-logs/performance_comparison.png)
 
-### Training Logs
+### 📄 Training Logs
 
 For complete training logs and performance logs, please see:
 
 - **PyTorch Training Log**: `pics-and-logs/log_torch.txt`, **Performance Log**: `pics-and-logs/eval_summary_torch.txt`
 - **Jittor Log**: `pics-and-logs/log_jittor.txt`, **Performance Log**: `pics-and-logs/eval_summary_jittor.txt`
 
-## Performance Comparison
+## 📊 Performance Comparison
 
-### Training Progress
+### ⏱️ Training Progress
 
 | Framework | Training Epochs |
 | --------- | --------------- |
 | PyTorch   | 31 epochs       |
 | Jittor    | 120 epochs      |
 
-### Final Performance Comparison (last epoch)
+### 🎯 Final Performance Comparison (last epoch)
 
 | Metric | PyTorch | Jittor | Difference |
 | ------ | ------- | ------ | ---------- |
@@ -241,7 +261,7 @@ For complete training logs and performance logs, please see:
 | AP50   | 0.0010  | 0.0012 | +0.0002    |
 | AP75   | 0.0001  | 0.0000 | -0.0001    |
 
-### Best Performance Comparison
+### 🏆 Best Performance Comparison
 
 | Metric | PyTorch Best | Jittor Best |
 | ------ | ------------ | ----------- |
@@ -249,9 +269,9 @@ For complete training logs and performance logs, please see:
 | AP50   | 0.0010       | 0.0019      |
 | AP75   | 0.0001       | 0.0002      |
 
-## Common Issues
+## ❓ Common Issues
 
-### Jittor Installation Issues
+### 💻 Jittor Installation Issues
 
 #### 1. Missing libstdc++.so.6 Dynamic Library
 
@@ -263,6 +283,8 @@ ImportError: /root/miniconda3/envs/jt/bin/../lib/libstdc++.so.6: version `GLIBCX
 ```
 
 **Solution**:
+
+Create a symbolic link to link the system's libstdc++.so.6 to the conda environment:
 
 ```bash
 ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /root/miniconda3/envs/jt/lib/libstdc++.so.6
@@ -286,7 +308,7 @@ MD5 mismatch between the server and the downloaded file /root/.cache/jittor/cutl
 
 - Method 2: Modify the download link in Jittor source code to the above address
 
-### PyTorch to Jittor Conversion Notes
+### 🔄 PyTorch to Jittor Conversion Notes
 
 #### 1. Advanced Indexing Behavior Differences
 
@@ -297,6 +319,8 @@ PyTorch and Jittor have fundamental differences in handling advanced indexing:
 - **Jittor/NumPy**: Performs Cartesian product operation on index arrays
 
 **Specific Behavior**:
+
+The following code demonstrates the different behaviors in advanced indexing between the two frameworks:
 
 ```python
 # In PyTorch
@@ -316,6 +340,8 @@ src_logits[idx]
 
 **Solution**:
 
+Solve this issue by converting 2D indices to 1D linear indices:
+
 ```python
 def _make_linear_idx(self, batch_idx, src_idx, num_queries):
     """Convert 2D indices (batch_idx, query_idx) to 1D linear indices"""
@@ -334,6 +360,8 @@ Jittor's `argmax` function returns a tuple `(indices, values)`, while PyTorch on
 
 **Jittor argmax Behavior**:
 
+The following example shows the return value structure of Jittor's argmax:
+
 ```python
 >>> x = jt.randn(3, 2)
 jt.Var([[-0.1429974  -1.1169171 ]
@@ -345,6 +373,8 @@ jt.Var([[-0.1429974  -1.1169171 ]
 ```
 
 **Solution**:
+
+To maintain compatibility with PyTorch, only take the indices part:
 
 ```python
 # PyTorch code
