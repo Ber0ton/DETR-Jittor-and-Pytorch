@@ -1,0 +1,40 @@
+Brotli @ file:///croot/brotli-split_1714483155106/work
+certifi @ file:///croot/certifi_1725551672989/work/certifi
+charset-normalizer @ file:///croot/charset-normalizer_1721748349566/work
+contourpy==1.1.1
+cycler==0.12.1
+Cython @ file:///croot/cython_1727769790504/work
+filelock @ file:///croot/filelock_1700591183607/work
+fonttools==4.57.0
+gmpy2 @ file:///tmp/build/80754af9/gmpy2_1645455532332/work
+idna @ file:///croot/idna_1714398848350/work
+importlib_resources==6.4.5
+Jinja2 @ file:///croot/jinja2_1716993405101/work
+kiwisolver==1.4.7
+MarkupSafe @ file:///croot/markupsafe_1704205993651/work
+matplotlib==3.7.5
+mkl-fft @ file:///croot/mkl_fft_1695058164594/work
+mkl-random @ file:///croot/mkl_random_1695059800811/work
+mkl-service==2.4.0
+mpmath @ file:///croot/mpmath_1690848262763/work
+networkx @ file:///croot/networkx_1690561992265/work
+numpy @ file:///work/mkl/numpy_and_numpy_base_1682952636358/work
+packaging @ file:///croot/packaging_1720101850331/work
+pillow @ file:///croot/pillow_1721059439630/work
+platformdirs @ file:///croot/platformdirs_1692205439124/work
+pooch @ file:///croot/pooch_1695850093751/work
+pycocotools @ git+https://github.com/cocodataset/cocoapi.git@8c9bcc3cf640524c4c20a9c40e89cb6a2f2fa0e9#subdirectory=PythonAPI
+pyparsing==3.1.4
+PySocks @ file:///tmp/build/80754af9/pysocks_1605305779399/work
+python-dateutil==2.9.0.post0
+PyYAML @ file:///croot/pyyaml_1728657952215/work
+requests @ file:///croot/requests_1721410876868/work
+scipy==1.10.1
+six==1.17.0
+sympy @ file:///croot/sympy_1734622612703/work
+torch==2.4.1
+torchvision==0.20.0
+triton==3.0.0
+typing_extensions @ file:///croot/typing_extensions_1715268824938/work
+urllib3 @ file:///croot/urllib3_1727769808118/work
+zipp==3.20.2
