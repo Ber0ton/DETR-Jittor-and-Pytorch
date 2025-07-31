@@ -23,8 +23,8 @@
 #### 克隆仓库
 
 ```bash
-git clone https://github.com/yourusername/DETR-Jittor.git
-cd DETR-Jittor
+git clone https://github.com/Ber0ton/DETR-Jittor-and-Pytorch.git
+cd DETR-Jittor-and-Pytorch
 ```
 
 #### Jittor 环境配置
@@ -47,6 +47,7 @@ python3.7 -m jittor.test.test_example
 python3.7 -m jittor.test.test_cudnn_op
 
 # 6. 安装项目依赖
+cd DETR-Jittor
 pip install -r requirements.txt
 ```
 
@@ -61,6 +62,7 @@ conda activate pt_detr
 pip install torch==2.4.1 torchvision==0.20.0
 
 # 3. 安装项目依赖
+cd DETR-Pytorch
 pip install -r requirements.txt
 ```
 
