@@ -4,15 +4,13 @@
 
 [![Jittor](https://img.shields.io/badge/Jittor-v1.3.8.5+-green.svg?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMiA3VjE3TDEyIDIyTDIyIDE3VjdMMTIgMloiIGZpbGw9IiM0Q0FGNTAiLz4KPC9zdmc+)](https://github.com/Jittor/jittor) [![PyTorch](https://img.shields.io/badge/PyTorch-v2.4.1-orange.svg?style=for-the-badge&logo=pytorch)](https://pytorch.org/)
 
-本项目是 **DETR (Detection Transformer)** 的 **Jittor** 框架实现，旨在验证 Jittor 与 PyTorch 在深度学习模型训练中的一致性和性能对比。
+本项目是 **DETR (Detection Transformer)** 的 **Jittor** 框架实现，旨在验证 Jittor 与 PyTorch 在深度学习模型训练中的一致性和性能对比，
 
-- **完整复现**：基于官方 PyTorch 版本，使用 Jittor 框架完整实现 DETR 模型
-- **性能验证**：提供了详细的训练日志和性能对比数据
-- **易于使用**：提供完整的训练、测试脚本和配置说明
-> - 当前结果基于包含 1000 张图像的小规模数据集验证实验
-> - 根据官方 PyTorch 实现，在完整 COCO 数据集上达到论文报告的标准性能（AP ~42.0）需要在 8 张 V100 GPU 上训练 300 个 epoch，见https://github.com/facebookresearch/detr:
-> - 'A single epoch takes 28 minutes, so 300 epoch training takes around 6 days on a single machine with 8 V100 cards. To ease reproduction of our results we provide results and training logs for 150 epoch schedule (3 days on a single machine), achieving 39.5/60.3 AP/AP50.'
-> - Transformer 的全局建模能力虽然有效减少了检测框冗余，但其高计算复杂度也带来了更长的收敛时间
+- 考虑到计算资源、时间有限以及过小数据集易导致过拟合，当前实验对齐结果基于包含 1000 张图像的小规模数据集实现，根据官方 PyTorch 实现，在完整 COCO 数据集上达到论文报告的标准性能（AP ~42.0）需要在 8 张 V100 GPU 上训练 300 个 epoch，见https://github.com/facebookresearch/detr:
+
+  > 'A single epoch takes 28 minutes, so 300 epoch training takes around 6 days on a single machine with 8 V100 cards. To ease reproduction of our results we provide results and training logs for 150 epoch schedule (3 days on a single machine), achieving 39.5/60.3 AP/AP50.'
+
+- Transformer 的全局建模能力虽然有效减少了检测框冗余，但其高计算复杂度也带来了更长的收敛时间。虽然如此，本项目基于官方 PyTorch 版本，使用 Jittor 框架完整实现 DETR 模型，提供了详细的训练日志和性能对比数据，同时提供完整的训练、测试脚本和配置说明。
 
 ## 环境配置
 
