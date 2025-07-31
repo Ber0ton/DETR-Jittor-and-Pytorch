@@ -1,10 +1,10 @@
 # DETR - Jittor 实现
 
-## 项目简介
+## 📋 项目简介
 
 [![Jittor](https://img.shields.io/badge/Jittor-v1.3.8.5+-green.svg?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMiA3VjE3TDEyIDIyTDIyIDE3VjdMMTIgMloiIGZpbGw9IiM0Q0FGNTAiLz4KPC9zdmc+)](https://github.com/Jittor/jittor) [![PyTorch](https://img.shields.io/badge/PyTorch-v2.4.1-orange.svg?style=for-the-badge&logo=pytorch)](https://pytorch.org/)
 
-本项目是 **DETR (Detection Transformer)** 的 **Jittor** 框架实现，旨在验证 Jittor 与 PyTorch 在深度学习模型训练中的一致性和性能对比.
+本项目是 **DETR (Detection Transformer)** 的 **Jittor** 框架实现，旨在验证 Jittor 与 PyTorch 在深度学习模型训练中的一致性和性能对比。
 
 - 考虑到计算资源、时间有限以及过小数据集易导致过拟合，当前实验对齐结果基于包含 1000 张图像的小规模数据集实现，根据官方 PyTorch 实现，在完整 COCO 数据集上达到论文报告的标准性能（AP ~42.0）需要在 8 张 V100 GPU 上训练 300 个 epoch，见https://github.com/facebookresearch/detr:
 
@@ -12,24 +12,28 @@
 
 - Transformer 的全局建模能力虽然有效减少了检测框冗余，但其高计算复杂度也带来了更长的收敛时间。虽然如此，本项目基于官方 PyTorch 版本，使用 Jittor 框架完整实现 DETR 模型，提供了详细的训练日志和性能对比数据，同时提供完整的训练、测试脚本和配置说明。
 
-## 环境配置
+## 🛠️ 环境配置
 
-### 系统要求
+### 📦 系统要求
 
 - Python >= 3.7
 - Jittor >= 1.3.8.5
 - CUDA >= 12.1
 
-### 安装步骤
+### 📥 安装步骤
 
-#### 克隆仓库
+#### 🔧 克隆仓库
+
+以下命令将克隆整个项目仓库到本地：
 
 ```bash
 git clone https://github.com/Ber0ton/DETR-Jittor-and-Pytorch.git
 cd DETR-Jittor-and-Pytorch
 ```
 
-#### Jittor 环境配置
+#### 🚀 Jittor 环境配置
+
+以下步骤将帮助您配置完整的 Jittor 运行环境，包括创建虚拟环境、安装依赖以及验证安装：
 
 ```bash
 # 1. 创建 Jittor 虚拟环境
@@ -53,7 +57,9 @@ cd DETR-Jittor
 pip install -r requirements.txt
 ```
 
-#### PyTorch 环境配置（对比实验用）
+#### 🔥 PyTorch 环境配置（对比实验用）
+
+为了进行框架性能对比，您还需要配置 PyTorch 环境：
 
 ```bash
 # 1. 创建 PyTorch 虚拟环境
@@ -68,9 +74,9 @@ cd DETR-Pytorch
 pip install -r requirements.txt
 ```
 
-## 数据准备
+## 📊 数据准备
 
-### COCO 数据集结构
+### 📁 COCO 数据集结构
 
 请按照以下目录结构准备您的数据集，标注格式需符合 COCO 标准：
 
@@ -83,9 +89,11 @@ path/to/coco/
 └── val2017/          # 验证图片
 ```
 
-### 数据集下载
+### 💾 数据集下载
 
-#### 官方完整COCO数据集
+####  官方完整COCO数据集
+
+如果您需要使用完整的 COCO 数据集进行训练，可以使用以下脚本下载：
 
 ```bash
 # 下载 COCO 2017 数据集（可选）
@@ -103,7 +111,7 @@ wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip
 unzip annotations_trainval2017.zip
 ```
 
-#### 自己的数据集
+#### 📦 自定义数据集
 
 考虑到计算资源限制和实验效率，本项目采用了精简版 COCO 数据集进行验证实验：
 
@@ -117,9 +125,11 @@ unzip annotations_trainval2017.zip
 - 百度网盘：https://pan.baidu.com/s/1TeHnVfY88K5BGvCQ33lGgw（提取码：m74q）
 - 包含已处理好的 COCO 格式标注文件
 
-## 训练脚本
+## 🚀 训练脚本
 
-### Jittor 训练
+### 🟢 Jittor 训练
+
+以下命令启动 Jittor 框架下的 DETR 模型训练。注意根据您的 GPU 显存调整 batch_size 参数：
 
 ```bash
 python main.py \
@@ -132,7 +142,9 @@ python main.py \
     --lr_drop 200
 ```
 
-### PyTorch 训练（对比参考）
+### 🟠 PyTorch 训练（对比参考）
+
+使用相同的超参数在 PyTorch 框架下训练，用于性能对比：
 
 ```bash
 python main.py \
@@ -145,9 +157,11 @@ python main.py \
     --lr_drop 200
 ```
 
-## 测试脚本
+## 🧪 测试脚本
 
-### Jittor 评估
+### 🟢 Jittor 评估
+
+加载训练好的 Jittor 模型进行性能评估：
 
 ```bash
 python main.py \
@@ -158,7 +172,9 @@ python main.py \
     --coco_path /path/to/coco
 ```
 
-### PyTorch 评估
+### 🟠 PyTorch 评估
+
+加载训练好的 PyTorch 模型进行性能评估：
 
 ```bash
 python main.py \
@@ -169,7 +185,7 @@ python main.py \
     --coco_path /path/to/coco
 ```
 
-## 实验说明与模型权重
+## 📝 实验说明与模型权重
 
 由于 DETR 模型的高计算复杂度以及本实验的计算资源限制（单卡训练、小批次、有限训练轮数），当前的 AP 性能指标尚未达到论文报告的水平，不宜作为模型性能的参考基准。然而，为验证 Jittor 实现与 PyTorch 版本的正确对齐，此处提供相应的模型权重文件 https://pan.baidu.com/s/1bPnYl0jqxvm3Y5oK_VUjow?pwd=qbdf （提取码: qbdf ），用于：
 
@@ -177,9 +193,9 @@ python main.py \
 - 检查数值计算的对齐情况
 - 作为后续完整训练的初始化权重
 
-## 训练配置与日志
+## ⚙️ 训练配置与日志
 
-### 主要训练参数
+### 🔧 主要训练参数
 
 此处仅展示优化器超参数，完整参数配置请参见 `main.py`。
 
@@ -205,33 +221,37 @@ python main.py \
 | `--epochs`        | 31     | int   | 训练轮数       |
 | `--clip_max_norm` | 0.1    | float | 梯度裁剪阈值   |
 
-### 训练曲线
+### 📈 训练曲线
 
 #### 损失曲线对比
 
-![Training Loss Comparison](./pics-and-logs/training_loss_comparison.png)
+下图展示了 Jittor 和 PyTorch 两个框架在训练过程中的损失变化对比。可以看到两个框架的损失收敛趋势基本一致：
+
+![Training Loss Comparison](https://claude6.claudechat.pro/chat/pics-and-logs/training_loss_comparison.png)
 
 #### AP 性能曲线对比
 
-![Performance Comparison](./pics-and-logs/performance_comparison.png)
+下图展示了两个框架在验证集上的 AP 性能变化。由于数据集规模较小，性能指标仅供框架对齐验证参考：
 
-### 训练日志
+![Performance Comparison](https://claude6.claudechat.pro/chat/pics-and-logs/performance_comparison.png)
+
+### 📄 训练日志
 
 完整的训练日志与性能日志请查看：
 
 - **PyTorch 训练日志**: `pics-and-logs/log_torch.txt`，**性能日志**`pics-and-logs/eval_summary_torch.txt`
 - **Jittor 日志**: `pics-and-logs/log_jittor.txt`，**性能日志**`pics-and-logs/eval_summary_jittor.txt`
 
-## 性能对比
+## 📊 性能对比
 
-### 训练进度
+### ⏱️ 训练进度
 
 | 框架    | 训练轮数   |
 | ------- | ---------- |
 | PyTorch | 31 epochs  |
 | Jittor  | 120 epochs |
 
-### 最终性能对比（最后一个 epoch）
+### 🎯 最终性能对比（最后一个 epoch）
 
 | 指标 | PyTorch | Jittor | 差异    |
 | ---- | ------- | ------ | ------- |
@@ -239,7 +259,7 @@ python main.py \
 | AP50 | 0.0010  | 0.0012 | +0.0002 |
 | AP75 | 0.0001  | 0.0000 | -0.0001 |
 
-### 最佳性能对比
+### 🏆 最佳性能对比
 
 | 指标 | PyTorch 最佳值 | Jittor 最佳值 |
 | ---- | -------------- | ------------- |
@@ -247,9 +267,9 @@ python main.py \
 | AP50 | 0.0010         | 0.0019        |
 | AP75 | 0.0001         | 0.0002        |
 
-## 常见问题
+## ❓ 常见问题
 
-### Jittor 安装问题
+### 💻 Jittor 安装问题
 
 #### 1. 缺少 libstdc++.so.6 动态链接库
 
@@ -261,6 +281,8 @@ ImportError: /root/miniconda3/envs/jt/bin/../lib/libstdc++.so.6: version `GLIBCX
 ```
 
 **解决方案**：
+
+创建符号链接，将系统的 libstdc++.so.6 链接到 conda 环境中：
 
 ```bash
 ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /root/miniconda3/envs/jt/lib/libstdc++.so.6
@@ -284,17 +306,18 @@ MD5 mismatch between the server and the downloaded file /root/.cache/jittor/cutl
 
 - 方法二：修改 Jittor 源码中的下载链接为上述地址
 
-### PyTorch 到 Jittor 转换注意事项
+### 🔄 PyTorch 到 Jittor 转换注意事项
 
 #### 1. 高级索引行为差异
 
-**问题描述**：
- PyTorch 和 Jittor 在处理高级索引时存在根本性差异：
+**问题描述**： PyTorch 和 Jittor 在处理高级索引时存在根本性差异：
 
 - **PyTorch**：对多个索引数组进行配对（zip）操作
 - **Jittor/NumPy**：对索引数组进行笛卡尔积操作
 
 **具体表现**：
+
+以下代码展示了两个框架在高级索引上的不同行为：
 
 ```python
 # PyTorch 中
@@ -314,6 +337,8 @@ src_logits[idx]
 
 **解决方案**：
 
+通过将二维索引转换为一维线性索引来解决此问题：
+
 ```python
 def _make_linear_idx(self, batch_idx, src_idx, num_queries):
     """将二维索引 (batch_idx, query_idx) 转换为一维线性索引"""
@@ -327,10 +352,11 @@ selected_logits = src_logits_flat[linear_idx]
 
 #### 2. argmax 返回值差异
 
-**问题描述**：
- Jittor 的 `argmax` 函数返回一个元组 `(indices, values)`，而 PyTorch 只返回索引。
+**问题描述**： Jittor 的 `argmax` 函数返回一个元组 `(indices, values)`，而 PyTorch 只返回索引。
 
 **Jittor argmax 行为**：
+
+以下示例展示了 Jittor argmax 的返回值结构：
 
 ```python
 >>> x = jt.randn(3, 2)
@@ -343,6 +369,8 @@ jt.Var([[-0.1429974  -1.1169171 ]
 ```
 
 **解决方案**：
+
+为保持与 PyTorch 兼容，需要只取索引部分：
 
 ```python
 # PyTorch 代码
