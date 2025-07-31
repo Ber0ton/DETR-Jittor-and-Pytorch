@@ -1,125 +1,127 @@
-# DETR - Jittor 实现
+# DETR - Jittor Implementation
 
-## 项目简介
+[中文版本](./README_CN.md) | English
+
+## Project Overview
 
 [![Jittor](https://img.shields.io/badge/Jittor-v1.3.8.5+-green.svg?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMiA3VjE3TDEyIDIyTDIyIDE3VjdMMTIgMloiIGZpbGw9IiM0Q0FGNTAiLz4KPC9zdmc+)](https://github.com/Jittor/jittor) [![PyTorch](https://img.shields.io/badge/PyTorch-v2.4.1-orange.svg?style=for-the-badge&logo=pytorch)](https://pytorch.org/)
 
-本项目是 **DETR (Detection Transformer)** 的 **Jittor** 框架实现，旨在验证 Jittor 与 PyTorch 在深度学习模型训练中的一致性和性能对比.
+This project is a **Jittor** framework implementation of **DETR (Detection Transformer)**, aimed at verifying the consistency and performance comparison between Jittor and PyTorch in deep learning model training.
 
-- 考虑到计算资源、时间有限以及过小数据集易导致过拟合，当前实验对齐结果基于包含 1000 张图像的小规模数据集实现，根据官方 PyTorch 实现，在完整 COCO 数据集上达到论文报告的标准性能（AP ~42.0）需要在 8 张 V100 GPU 上训练 300 个 epoch，见https://github.com/facebookresearch/detr:
+- Considering limited computational resources, time constraints, and the tendency of small datasets to overfit, current alignment experiments are based on a small-scale dataset containing 1,000 images. According to the official PyTorch implementation, achieving the standard performance reported in the paper (AP ~42.0) on the complete COCO dataset requires training for 300 epochs on 8 V100 GPUs. See https://github.com/facebookresearch/detr:
 
   > 'A single epoch takes 28 minutes, so 300 epoch training takes around 6 days on a single machine with 8 V100 cards. To ease reproduction of our results we provide results and training logs for 150 epoch schedule (3 days on a single machine), achieving 39.5/60.3 AP/AP50.'
 
-- Transformer 的全局建模能力虽然有效减少了检测框冗余，但其高计算复杂度也带来了更长的收敛时间。虽然如此，本项目基于官方 PyTorch 版本，使用 Jittor 框架完整实现 DETR 模型，提供了详细的训练日志和性能对比数据，同时提供完整的训练、测试脚本和配置说明。
+- While Transformer's global modeling capability effectively reduces detection box redundancy, its high computational complexity also leads to longer convergence times. Nevertheless, this project provides a complete DETR model implementation using the Jittor framework based on the official PyTorch version, with detailed training logs and performance comparison data, along with complete training and testing scripts and configuration instructions.
 
-## 环境配置
+## Environment Setup
 
-### 系统要求
+### System Requirements
 
 - Python >= 3.7
 - Jittor >= 1.3.8.5
 - CUDA >= 12.1
 
-### 安装步骤
+### Installation Steps
 
-#### 克隆仓库
+#### Clone Repository
 
 ```bash
 git clone https://github.com/Ber0ton/DETR-Jittor-and-Pytorch.git
 cd DETR-Jittor-and-Pytorch
 ```
 
-#### Jittor 环境配置
+#### Jittor Environment Setup
 
 ```bash
-# 1. 创建 Jittor 虚拟环境
+# 1. Create Jittor virtual environment
 conda create -n jt_detr python=3.7
 conda activate jt_detr
 
-# 2. 安装系统依赖
+# 2. Install system dependencies
 sudo apt install python3.7-dev libomp-dev
 
-# 3. 安装 Jittor
+# 3. Install Jittor
 python3.7 -m pip install jittor
 
-# 4. 验证安装
+# 4. Verify installation
 python3.7 -m jittor.test.test_example
 
-# 5. 如果您的电脑包含 Nvidia 显卡，检查 cudnn 加速库
+# 5. If your computer has an Nvidia GPU, check cudnn acceleration library
 python3.7 -m jittor.test.test_cudnn_op
 
-# 6. 安装项目依赖
+# 6. Install project dependencies
 cd DETR-Jittor
 pip install -r requirements.txt
 ```
 
-#### PyTorch 环境配置（对比实验用）
+#### PyTorch Environment Setup (for comparison experiments)
 
 ```bash
-# 1. 创建 PyTorch 虚拟环境
+# 1. Create PyTorch virtual environment
 conda create -n pt_detr python=3.7
 conda activate pt_detr
 
-# 2. 安装 PyTorch
+# 2. Install PyTorch
 pip install torch==2.4.1 torchvision==0.20.0
 
-# 3. 安装项目依赖
+# 3. Install project dependencies
 cd DETR-Pytorch
 pip install -r requirements.txt
 ```
 
-## 数据准备
+## Data Preparation
 
-### COCO 数据集结构
+### COCO Dataset Structure
 
-请按照以下目录结构准备您的数据集，标注格式需符合 COCO 标准：
+Please prepare your dataset according to the following directory structure. Annotations must follow COCO format standards:
 
 ```
 path/to/coco/
-├── annotations/      # 标注 JSON 文件
+├── annotations/      # Annotation JSON files
 │   ├── instances_train2017.json
 │   └── instances_val2017.json
-├── train2017/        # 训练图片
-└── val2017/          # 验证图片
+├── train2017/        # Training images
+└── val2017/          # Validation images
 ```
 
-### 数据集下载
+### Dataset Download
 
-#### 官方完整COCO数据集
+#### Official Complete COCO Dataset
 
 ```bash
-# 下载 COCO 2017 数据集（可选）
+# Download COCO 2017 dataset (optional)
 mkdir -p data/coco
 cd data/coco
 
-# 下载图片
+# Download images
 wget http://images.cocodataset.org/zips/train2017.zip
 wget http://images.cocodataset.org/zips/val2017.zip
 unzip train2017.zip
 unzip val2017.zip
 
-# 下载标注
+# Download annotations
 wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip
 unzip annotations_trainval2017.zip
 ```
 
-#### 自己的数据集
+#### Custom Dataset
 
-考虑到计算资源限制和实验效率，本项目采用了精简版 COCO 数据集进行验证实验：
+Considering computational resource limitations and experimental efficiency, this project uses a streamlined COCO dataset for validation experiments:
 
-**数据集规模**：
+**Dataset Scale**:
 
-- 完整版本：1,000 张训练图像
-- 极简版本：60 张训练图像（用于快速验证）
+- Full version: 1,000 training images
+- Minimal version: 60 training images (for quick validation)
 
-**数据集获取**：
+**Dataset Access**:
 
-- 百度网盘：https://pan.baidu.com/s/1TeHnVfY88K5BGvCQ33lGgw（提取码：m74q）
-- 包含已处理好的 COCO 格式标注文件
+- Baidu Netdisk: https://pan.baidu.com/s/1TeHnVfY88K5BGvCQ33lGgw (Password: m74q)
+- Contains pre-processed COCO format annotation files
 
-## 训练脚本
+## Training Scripts
 
-### Jittor 训练
+### Jittor Training
 
 ```bash
 python main.py \
@@ -132,7 +134,7 @@ python main.py \
     --lr_drop 200
 ```
 
-### PyTorch 训练（对比参考）
+### PyTorch Training (for comparison)
 
 ```bash
 python main.py \
@@ -145,9 +147,9 @@ python main.py \
     --lr_drop 200
 ```
 
-## 测试脚本
+## Testing Scripts
 
-### Jittor 评估
+### Jittor Evaluation
 
 ```bash
 python main.py \
@@ -158,7 +160,7 @@ python main.py \
     --coco_path /path/to/coco
 ```
 
-### PyTorch 评估
+### PyTorch Evaluation
 
 ```bash
 python main.py \
@@ -169,168 +171,168 @@ python main.py \
     --coco_path /path/to/coco
 ```
 
-## 实验说明与模型权重
+## Experimental Notes and Model Weights
 
-由于 DETR 模型的高计算复杂度以及本实验的计算资源限制（单卡训练、小批次、有限训练轮数），当前的 AP 性能指标尚未达到论文报告的水平，不宜作为模型性能的参考基准。然而，为验证 Jittor 实现与 PyTorch 版本的正确对齐，此处提供相应的模型权重文件 https://pan.baidu.com/s/1bPnYl0jqxvm3Y5oK_VUjow?pwd=qbdf （提取码: qbdf ），用于：
+Due to DETR model's high computational complexity and experimental resource limitations (single GPU training, small batch size, limited training epochs), current AP performance metrics have not yet reached the levels reported in the paper and should not be used as a performance benchmark. However, to verify the correct alignment between Jittor implementation and PyTorch version, corresponding model weight files are provided at https://pan.baidu.com/s/1bPnYl0jqxvm3Y5oK_VUjow?pwd=qbdf (Password: qbdf) for:
 
-- 验证模型结构的一致性
-- 检查数值计算的对齐情况
-- 作为后续完整训练的初始化权重
+- Verifying model structure consistency
+- Checking numerical computation alignment
+- Serving as initialization weights for subsequent complete training
 
-## 训练配置与日志
+## Training Configuration and Logs
 
-### 主要训练参数
+### Main Training Parameters
 
-此处仅展示优化器超参数，完整参数配置请参见 `main.py`。
+Only optimizer hyperparameters are shown here. For complete parameter configuration, see `main.py`.
 
-#### Jittor 训练配置
+#### Jittor Training Configuration
 
-| 参数              | 默认值  | 类型  | 说明           |
-| ----------------- | ------- | ----- | -------------- |
-| `--lr`            | 0.25e-4 | float | 主网络学习率   |
-| `--lr_backbone`   | 0.25e-5 | float | 骨干网络学习率 |
-| `--batch_size`    | 4       | int   | 训练批次大小   |
-| `--weight_decay`  | 1e-4    | float | 权重衰减系数   |
-| `--epochs`        | 120     | int   | 训练轮数       |
-| `--clip_max_norm` | 0.1     | float | 梯度裁剪阈值   |
+| Parameter         | Default | Type  | Description              |
+| ----------------- | ------- | ----- | ------------------------ |
+| `--lr`            | 0.25e-4 | float | Main network learning rate |
+| `--lr_backbone`   | 0.25e-5 | float | Backbone learning rate   |
+| `--batch_size`    | 4       | int   | Training batch size      |
+| `--weight_decay`  | 1e-4    | float | Weight decay coefficient |
+| `--epochs`        | 120     | int   | Training epochs          |
+| `--clip_max_norm` | 0.1     | float | Gradient clipping threshold |
 
-#### PyTorch 训练配置
+#### PyTorch Training Configuration
 
-| 参数              | 默认值 | 类型  | 说明           |
-| ----------------- | ------ | ----- | -------------- |
-| `--lr`            | 1e-4   | float | 主网络学习率   |
-| `--lr_backbone`   | 1e-5   | float | 骨干网络学习率 |
-| `--batch_size`    | 8      | int   | 训练批次大小   |
-| `--weight_decay`  | 1e-4   | float | 权重衰减系数   |
-| `--epochs`        | 31     | int   | 训练轮数       |
-| `--clip_max_norm` | 0.1    | float | 梯度裁剪阈值   |
+| Parameter         | Default | Type  | Description              |
+| ----------------- | ------- | ----- | ------------------------ |
+| `--lr`            | 1e-4    | float | Main network learning rate |
+| `--lr_backbone`   | 1e-5    | float | Backbone learning rate   |
+| `--batch_size`    | 8       | int   | Training batch size      |
+| `--weight_decay`  | 1e-4    | float | Weight decay coefficient |
+| `--epochs`        | 31      | int   | Training epochs          |
+| `--clip_max_norm` | 0.1     | float | Gradient clipping threshold |
 
-### 训练曲线
+### Training Curves
 
-#### 损失曲线对比
+#### Loss Curve Comparison
 
 ![Training Loss Comparison](./pics-and-logs/training_loss_comparison.png)
 
-#### AP 性能曲线对比
+#### AP Performance Curve Comparison
 
 ![Performance Comparison](./pics-and-logs/performance_comparison.png)
 
-### 训练日志
+### Training Logs
 
-完整的训练日志与性能日志请查看：
+For complete training logs and performance logs, please see:
 
-- **PyTorch 训练日志**: `pics-and-logs/log_torch.txt`，**性能日志**`pics-and-logs/eval_summary_torch.txt`
-- **Jittor 日志**: `pics-and-logs/log_jittor.txt`，**性能日志**`pics-and-logs/eval_summary_jittor.txt`
+- **PyTorch Training Log**: `pics-and-logs/log_torch.txt`, **Performance Log**: `pics-and-logs/eval_summary_torch.txt`
+- **Jittor Log**: `pics-and-logs/log_jittor.txt`, **Performance Log**: `pics-and-logs/eval_summary_jittor.txt`
 
-## 性能对比
+## Performance Comparison
 
-### 训练进度
+### Training Progress
 
-| 框架    | 训练轮数   |
-| ------- | ---------- |
-| PyTorch | 31 epochs  |
-| Jittor  | 120 epochs |
+| Framework | Training Epochs |
+| --------- | --------------- |
+| PyTorch   | 31 epochs       |
+| Jittor    | 120 epochs      |
 
-### 最终性能对比（最后一个 epoch）
+### Final Performance Comparison (last epoch)
 
-| 指标 | PyTorch | Jittor | 差异    |
-| ---- | ------- | ------ | ------- |
-| AP   | 0.0002  | 0.0002 | ±0.0000 |
-| AP50 | 0.0010  | 0.0012 | +0.0002 |
-| AP75 | 0.0001  | 0.0000 | -0.0001 |
+| Metric | PyTorch | Jittor | Difference |
+| ------ | ------- | ------ | ---------- |
+| AP     | 0.0002  | 0.0002 | ±0.0000    |
+| AP50   | 0.0010  | 0.0012 | +0.0002    |
+| AP75   | 0.0001  | 0.0000 | -0.0001    |
 
-### 最佳性能对比
+### Best Performance Comparison
 
-| 指标 | PyTorch 最佳值 | Jittor 最佳值 |
-| ---- | -------------- | ------------- |
-| AP   | 0.0002         | 0.0007        |
-| AP50 | 0.0010         | 0.0019        |
-| AP75 | 0.0001         | 0.0002        |
+| Metric | PyTorch Best | Jittor Best |
+| ------ | ------------ | ----------- |
+| AP     | 0.0002       | 0.0007      |
+| AP50   | 0.0010       | 0.0019      |
+| AP75   | 0.0001       | 0.0002      |
 
-## 常见问题
+## Common Issues
 
-### Jittor 安装问题
+### Jittor Installation Issues
 
-#### 1. 缺少 libstdc++.so.6 动态链接库
+#### 1. Missing libstdc++.so.6 Dynamic Library
 
-**错误信息**：
+**Error Message**:
 
 ```
 ImportError: /root/miniconda3/envs/jt/bin/../lib/libstdc++.so.6: version `GLIBCXX_3.4.30' not found 
 (required by /root/.cache/jittor/jt1.3.9/g++11.4.0/py3.7.16/Linux-5.15.0-8xcd/IntelXeonProcex70/be50/default/cu12.1.105_sm_80/jittor_core.cpython-37m-x86_64-linux-gnu.so)
 ```
 
-**解决方案**：
+**Solution**:
 
 ```bash
 ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /root/miniconda3/envs/jt/lib/libstdc++.so.6
 ```
 
-#### 2. cutlass.zip 下载失败
+#### 2. cutlass.zip Download Failure
 
-**错误信息**：
+**Error Message**:
 
 ```
 MD5 mismatch between the server and the downloaded file /root/.cache/jittor/cutlass/cutlass.zip
 ```
 
-**解决方案**：
+**Solution**:
 
-- 方法一：手动下载 cutlass.zip
+- Method 1: Manually download cutlass.zip
 
   ```bash
   wget https://cg.cs.tsinghua.edu.cn/jittor/assets/cutlass.zip -O ~/.cache/jittor/cutlass/cutlass.zip
   ```
 
-- 方法二：修改 Jittor 源码中的下载链接为上述地址
+- Method 2: Modify the download link in Jittor source code to the above address
 
-### PyTorch 到 Jittor 转换注意事项
+### PyTorch to Jittor Conversion Notes
 
-#### 1. 高级索引行为差异
+#### 1. Advanced Indexing Behavior Differences
 
-**问题描述**：
- PyTorch 和 Jittor 在处理高级索引时存在根本性差异：
+**Problem Description**:
+PyTorch and Jittor have fundamental differences in handling advanced indexing:
 
-- **PyTorch**：对多个索引数组进行配对（zip）操作
-- **Jittor/NumPy**：对索引数组进行笛卡尔积操作
+- **PyTorch**: Performs pairing (zip) operation on multiple index arrays
+- **Jittor/NumPy**: Performs Cartesian product operation on index arrays
 
-**具体表现**：
+**Specific Behavior**:
 
 ```python
-# PyTorch 中
+# In PyTorch
 src_logits[idx]  # idx = (batch_idx, src_idx)
-# 会逐对取元素：src_logits[batch_idx[0], src_idx[0]], src_logits[batch_idx[1], src_idx[1]], ...
+# Takes elements pairwise: src_logits[batch_idx[0], src_idx[0]], src_logits[batch_idx[1], src_idx[1]], ...
 
-# Jittor 中
+# In Jittor
 src_logits[idx]  
-# 会生成笛卡尔积：所有 batch_idx 与所有 src_idx 的组合
+# Generates Cartesian product: all combinations of batch_idx with all src_idx
 ```
 
-**造成的影响**：
+**Impact**:
 
-- `target_classes[idx] = target_classes_o` 无法正确赋值，导致匹配的 query 仍保持为 no-object 类别
-- `src_boxes = outputs["pred_boxes"][idx]` 取出了 `(Q×N_match)` 的交叉矩阵
-- 损失被错误地分散，导致 `loss_bbox_unscaled ≈ 0.03`，训练看似正常但实际上：分类损失几乎无梯度，`class_error ≈ 10`，mAP 始终为 0
+- `target_classes[idx] = target_classes_o` cannot assign correctly, causing matched queries to remain as no-object class
+- `src_boxes = outputs["pred_boxes"][idx]` extracts a `(Q×N_match)` cross matrix
+- Loss is incorrectly distributed, resulting in `loss_bbox_unscaled ≈ 0.03`, training appears normal but actually: classification loss has almost no gradient, `class_error ≈ 10`, mAP remains 0
 
-**解决方案**：
+**Solution**:
 
 ```python
 def _make_linear_idx(self, batch_idx, src_idx, num_queries):
-    """将二维索引 (batch_idx, query_idx) 转换为一维线性索引"""
+    """Convert 2D indices (batch_idx, query_idx) to 1D linear indices"""
     return batch_idx * num_queries + src_idx
 
-# 使用示例
+# Usage example
 linear_idx = self._make_linear_idx(batch_idx, src_idx, num_queries)
 src_logits_flat = src_logits.view(-1, num_classes)
 selected_logits = src_logits_flat[linear_idx]
 ```
 
-#### 2. argmax 返回值差异
+#### 2. argmax Return Value Differences
 
-**问题描述**：
- Jittor 的 `argmax` 函数返回一个元组 `(indices, values)`，而 PyTorch 只返回索引。
+**Problem Description**:
+Jittor's `argmax` function returns a tuple `(indices, values)`, while PyTorch only returns indices.
 
-**Jittor argmax 行为**：
+**Jittor argmax Behavior**:
 
 ```python
 >>> x = jt.randn(3, 2)
@@ -338,18 +340,18 @@ jt.Var([[-0.1429974  -1.1169171 ]
         [-0.35682714 -1.5031573 ]
         [ 0.66668254  1.1606413 ]], dtype=float32)
 >>> jt.argmax(x, 0)
-(jt.Var([2 2], dtype=int32),          # 索引
- jt.Var([0.66668254 1.1606413], dtype=float32))  # 对应的最大值
+(jt.Var([2 2], dtype=int32),          # indices
+ jt.Var([0.66668254 1.1606413], dtype=float32))  # corresponding max values
 ```
 
-**解决方案**：
+**Solution**:
 
 ```python
-# PyTorch 代码
+# PyTorch code
 indices = torch.argmax(x, dim=0)
 
-# Jittor 等价代码
-indices, _ = jt.argmax(x, dim=0)  # 忽略返回的最大值
-# 或者
-indices = jt.argmax(x, dim=0)[0]  # 只取索引部分
+# Jittor equivalent
+indices, _ = jt.argmax(x, dim=0)  # Ignore returned max values
+# Or
+indices = jt.argmax(x, dim=0)[0]  # Take only the indices part
 ```
